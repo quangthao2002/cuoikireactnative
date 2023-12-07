@@ -4,9 +4,9 @@ import { useDispatch } from "react-redux";
 import { addItem } from "./actions";
 import store from "./store";
 
-const Screen2 = () => {
+const Screen2 = ({navigation}) => {
   const [newItem, setNewItem] = useState("");
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const handleAddItem = () => {
     const item = { name: newItem };
@@ -19,11 +19,14 @@ const Screen2 = () => {
     })
     .then(response => response.json())
     .then(data => {
-     store.dispatch(addItem(data));
+     dispatch(addItem(data));
      console.log(store.getState())
       setNewItem("");
+      navigation.goBack(); // Quay về Screen1 sau khi thêm thành công
     });
   }
+
+  
   return (
     <View style={{ marginTop: 10 }}>
       <Text style={{ fontWeight: "bold", textAlign: "center" }}>ADD JOB</Text>

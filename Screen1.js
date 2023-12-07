@@ -6,12 +6,14 @@ import store from "./store";
 
 const Screen1 = ({ navigation }) => {
   const [data, setData] = useState([]);
+  const items = useSelector(state => state);
+  console.log(items)
   const handleDeleteItem = (id) => {
     fetch(`https://655d45319f1e1093c599283e.mockapi.io/shop/${id}`, {
       method: "DELETE",
     }).then(() => {
       store.dispatch(deleteItem(id));
-      console.log(store.getState());
+      fetchData();
     });
   };
 
@@ -31,6 +33,10 @@ const Screen1 = ({ navigation }) => {
   useEffect(() => {
     fetchData();
   }, []);
+  useEffect(() => {
+    // Update state data with both old and new data
+    setData(prevData => [...prevData, ...items]);
+  }, [items]);
 
   return (
     <View>

@@ -2,13 +2,17 @@ import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
 import store from './store';
 import { updateItem } from './actions';
+import { useDispatch } from 'react-redux';
 
-const Screen3 = ({route}) => {
+const Screen3 = ({route,navigation}) => {
+    
     const {item} = route.params;
     console.log(item)
     const [newItem, setNewItem] = useState("");
+    const dispatch = useDispatch();
     const handleUpdateItem = () => {
         const updatedItem = {...item, congviec: newItem };
+        // console.log(u)
         fetch(`https://655d45319f1e1093c599283e.mockapi.io/shop/${item.id}`, {
           method: "PUT",
           headers: {
@@ -18,8 +22,11 @@ const Screen3 = ({route}) => {
         })
           .then((response) => response.json())
           .then((data) => {
-            store.dispatch(updateItem(data));
-          });
+            dispatch(updateItem(data));
+            setNewItem("");
+            navigation.goBack(); //
+            console.log(store.getState())
+        });
       };
   return (
     <View>
